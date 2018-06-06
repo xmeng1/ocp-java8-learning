@@ -218,4 +218,16 @@ class LambdaDemoTest {
 
 
     }
+
+    private static void printTreeStatic(String string) {
+        System.out.println("Tree name: " + string);
+    }
+
+    @Test
+    void methodRefTest() {
+
+        List<String> trees = Arrays.asList("fir", "ceder", "pine");
+        trees.forEach(System.out::println);
+        trees.forEach(LambdaDemoTest::printTreeStatic);
+    }
 }
