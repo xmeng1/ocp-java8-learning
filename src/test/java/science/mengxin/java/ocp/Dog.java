@@ -12,7 +12,7 @@ public class Dog {
     private int age;
     private int weight;
 
-    public Dog(String name, int age, int weight) {
+    public Dog(String name, int weight, int age) {
         this.name = name;
         this.age = age;
         this.weight = weight;
