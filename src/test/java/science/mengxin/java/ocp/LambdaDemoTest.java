@@ -14,14 +14,21 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class LambdaDemoTest {
 
+    Dog boi;
+    Dog clover;
+    Dog zooey;
     @BeforeEach
     void setUp() {
+        boi = new Dog("boi", 30, 6);
+        clover = new Dog("clover", 35, 12);
+        zooey = new Dog("zooey", 45, 8);
     }
 
     @AfterEach
@@ -137,9 +144,7 @@ class LambdaDemoTest {
     @Test
     void consumerAndThen(){
         List<Dog> dogs = new ArrayList<>();
-        Dog boi = new Dog("boi", 30, 6);
-        Dog clover = new Dog("clover", 35, 12);
-        Dog zooey = new Dog("zooey", 45, 8);
+
         dogs.add(boi);
         dogs.add(clover);
         dogs.add(zooey);
@@ -156,5 +161,12 @@ class LambdaDemoTest {
         Consumer<Dog> doBark = Dog::bark;
 
         dogs.forEach(displayName.andThen(doBark));
+    }
+
+    @Test
+    void predicateTest() {
+        Predicate<Dog> p = d -> d.getAge() > 9;
+        System.out.println("Is Boi older than 9? " + p.test(boi));
+        System.out.println("Is clover older than 9? " + p.test(clover));
     }
 }
