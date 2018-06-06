@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -130,5 +131,30 @@ class LambdaDemoTest {
         env.forEach(findUserName);
         System.out.println("Username from env: " + user.getUsername());
         assert user.getUsername().equals("initial");
+    }
+
+
+    @Test
+    void consumerAndThen(){
+        List<Dog> dogs = new ArrayList<>();
+        Dog boi = new Dog("boi", 30, 6);
+        Dog clover = new Dog("clover", 35, 12);
+        Dog zooey = new Dog("zooey", 45, 8);
+        dogs.add(boi);
+        dogs.add(clover);
+        dogs.add(zooey);
+
+        Consumer<Dog> displayName = d -> System.out.println(d + " ");
+        //dogs.forEach(displayName.andThen(d -> d.bark()));
+        // Lambda can be change to method reference
+        dogs.forEach(displayName.andThen(Dog::bark));
+
+        //lambda inline compile error
+        //dogs.forEach((d-> System.out.println(d + " ")).andThen(d->d.bark()));
+
+        //but we can use the name inline
+        Consumer<Dog> doBark = Dog::bark;
+
+        dogs.forEach(displayName.andThen(doBark));
     }
 }
