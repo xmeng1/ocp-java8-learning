@@ -7,15 +7,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -168,5 +162,60 @@ class LambdaDemoTest {
         Predicate<Dog> p = d -> d.getAge() > 9;
         System.out.println("Is Boi older than 9? " + p.test(boi));
         System.out.println("Is clover older than 9? " + p.test(clover));
+
+        Predicate<Dog> ageEqual6 = d -> d.getAge() == 6;
+        System.out.println("Is Boi Not 6? " + ageEqual6.negate().test(boi));
+
+
+        Predicate<Dog> name = d -> d.getName().equals("boi");
+        Predicate<Dog> nameAndAge = d -> name.and(ageEqual6).test(d);
+        System.out.println("---Test name and age of boi---");
+        System.out.println("Is Boi name 'boi' and age 6? " + nameAndAge.test(boi));
+        boi.setAge(7);
+        System.out.println("Is Boi name 'boi' and age 6? " + nameAndAge.test(boi));
+
+    }
+
+    @Test
+    void functionTest() {
+        Function<Integer, String> answer =  a -> {
+            if (a == 42) return "forty-two";
+            else return "No answer for you";
+        };
+
+        System.out.println(answer.apply(42));
+        assert answer.apply(42).equals("forty-two");
+        System.out.println(answer.apply(64));
+        assert answer.apply(64).equals("No answer for you");
+    }
+
+    @Test
+    void JdkMapFunctionTest() {
+        Map<String, String> aprilWinder = new TreeMap<>();
+        aprilWinder.put("April 2017", "Bob");
+        aprilWinder.put("April 2016", "Annette");
+        aprilWinder.put("April 2015", "Lamar");
+
+
+        aprilWinder.forEach((k,v) -> System.out.println(k + ": " + v));
+        System.out.println("=====");
+
+        aprilWinder.putIfAbsent("April 2013", "John Doe");
+        aprilWinder.computeIfAbsent("April 2014", (k) -> "John Doe");
+        aprilWinder.computeIfPresent("April 2015", (k,v) -> "new 2015 winner");
+        aprilWinder.forEach((k,v) -> System.out.println(k + ": " + v));
+        System.out.println("=====");
+
+        aprilWinder.replaceAll((k, v) -> v.toUpperCase());
+        aprilWinder.forEach((k,v) -> System.out.println(k + ": " + v));
+        System.out.println("=====");
+    }
+
+    @Test
+    void operatorTest() {
+        UnaryOperator<Double> log2 = v -> Math.log(v) / Math.log(2);
+        System.out.println(log2.apply(8.0));
+
+
     }
 }
