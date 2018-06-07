@@ -230,4 +230,7 @@ class LambdaDemoTest {
         trees.forEach(System.out::println);
         trees.forEach(LambdaDemoTest::printTreeStatic);
     }
+
+
+
 }
